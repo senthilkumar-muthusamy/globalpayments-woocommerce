@@ -241,13 +241,10 @@ abstract class AbstractGateway extends WC_Payment_Gateway_Cc {
 		$this->txn_descriptor    = $this->get_option( 'txn_descriptor' );
 		$this->allow_card_saving = $this->get_option( 'allow_card_saving' ) === 'yes';
 
-		$gateway_form_fields = $this->get_gateway_form_fields();
-		$gateway_properties = get_object_vars($this);
-		
-		foreach ($gateway_form_fields as $key => $options ) {
-		    if ( ! isset($gateway_properties[$key] ) ) {
-		        continue;
-		    }
+		foreach ( $this->get_gateway_form_fields() as $key => $options ) {
+			if ( ! property_exists( $this, $key ) ) {
+				continue;
+			}
 
 			$value = $this->get_option( $key );
 
